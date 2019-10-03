@@ -2660,7 +2660,7 @@ void GridFunction::Save(adios2stream &out, const std::string& variableName) cons
 
         if (fes->GetOrdering() == Ordering::byNODES)
         {
-          out.io.DefineVariable<double>(variableName, {}, {}, {nodes} );
+          out.io.DefineVariable<double>(variableName, {}, {}, {components,nodes} );
         }
         else
         {

@@ -337,6 +337,10 @@ public:
 #ifdef MFEM_USE_PUMI
    friend class ParPumiMesh;
 #endif
+
+#ifdef MFEM_USE_ADIOS2
+   friend class adios2stream;
+#endif
 };
 
 }

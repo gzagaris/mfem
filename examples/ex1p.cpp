@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
       adios2stream adios2output("refined_mesh_solution.bp",
                                 adios2stream::openmode::out, MPI_COMM_WORLD);
       pmesh->Print(adios2output);
-      x.Save(adios2output, "sol");
+      x.Save(adios2output, "solution");
 #endif
    }
 

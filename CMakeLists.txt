@@ -298,7 +298,7 @@ if (MFEM_USE_RAJA)
    find_package(RAJA REQUIRED)
 endif()
 
-# ADIOS2 for I/O
+# ADIOS2 for parallel I/O
 if (MFEM_USE_ADIOS2)
    find_package(ADIOS2 REQUIRED)
 endif()

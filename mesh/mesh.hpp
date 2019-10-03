@@ -22,7 +22,9 @@
 #include "../fem/eltrans.hpp"
 #include "../fem/coefficient.hpp"
 #include "../general/gzstream.hpp"
+#ifdef MFEM_USE_ADIOS2
 #include "../general/adios2stream.hpp"
+#endif
 #include <iostream>
 
 namespace mfem
@@ -50,6 +52,10 @@ class Mesh
    friend class ParNCMesh;
 #endif
    friend class NURBSExtension;
+
+#ifdef MFEM_USE_ADIOS2
+   friend class adios2stream;
+#endif
 
 protected:
    int Dim;

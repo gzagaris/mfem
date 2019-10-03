@@ -16,7 +16,6 @@
 #ifndef MFEM_ADIOS2STREAM
 #define MFEM_ADIOS2STREAM
 
-
 #include "../config/config.hpp"
 
 #include <map>
@@ -32,16 +31,22 @@
 namespace mfem
 {
 
-// forward declaring friends
 class Vector;
 class FiniteElementSpace;
 class GridFunction;
 class Mesh;
 
+template <class T>
+class Array;
+class Element;
+
 #ifdef MFEM_USE_MPI
-class ParGridFunction;
-class ParMesh;
+   class ParGridFunction;
+   class ParMesh;
 #endif
+
+
+
 
 class adios2stream
 {
@@ -56,10 +61,6 @@ class adios2stream
 #endif
 
 public:
-   /** true : engine step is active after engine.BeginStep(),
-    *  false: inactive after engine.EndStep() */
-   bool active_step = false;
-
    /**
     * Open modes for adios2stream (from fstream)
     * out: write
@@ -67,6 +68,9 @@ public:
     * app: append
     */
    enum class openmode { out, in, app };
+
+   /** Print and Save modes, deferred is done at Close or EndStep, sync is immediate */
+   enum class mode {sync, deferred};
 
 #ifdef MFEM_USE_MPI
 
@@ -126,6 +130,18 @@ public:
    /** Ends the current step, by default transports the data */
    void EndStep();
 
+protected:
+
+   std::vector<std::string> point_data_arrays;
+
+   int32_t GLVISToVTKType(const int glvisType) const noexcept;
+
+   bool IsConstantElementType(const Array<Element*>& elements ) const noexcept;
+
+   void Print(const Mesh& mesh, const adios2stream::mode print_mode = mode::sync);
+
+   //TODO void Save(const GridFunction grid, const std::string& variableName );
+
 private:
    /** placeholder for engine name */
    const std::string name;
@@ -141,6 +157,16 @@ private:
 
    /** heavy object doing system-level I/O operations */
    adios2::Engine engine;
+
+   /** true : engine step is active after engine.BeginStep(),
+     *  false: inactive after engine.EndStep() */
+   bool active_step = false;
+
+   static const std::string pre_vtk_schema;
+   static const std::string post_vtk_schema;
+
+   bool is_mesh_defined = false;
+
 };
 
 }  // end namespace mfem

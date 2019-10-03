@@ -670,7 +670,7 @@ void Vector::Print(std::ostream &out, int width) const
 
 #ifdef MFEM_USE_ADIOS2
 void Vector::Print(adios2stream &out,
-                   const std::string variable_name) const
+                   const std::string& variable_name) const
 {
    // TODO verify
     if (!size) { return; }
